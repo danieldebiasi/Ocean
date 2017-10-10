@@ -9,15 +9,17 @@ Sistema de previsão de tempo e marés desenvolvido em Java utilizando o Web Ser
 
 ## Autores
 
-* **Daniel Rodrigues De Biasi** 
+* **Daniel Rodrigues De Biasi** - Desenvolvedor
 
-* **Gustavo Trigoli Santos** 
+* **Gustavo Trigoli Santos** - Tester
 
-* **Leonardo Barreto Nogueira** 
+* **Lucas de Campos Vergueiro Scheunemann** - Product Owner/Tester
 
-* **Ricardo Hideki Adati Tomomitsu** 
+* **Ricardo Hideki Adati Tomomitsu** - Coordenador/Tester
 
-* **Roberth Riyu Tamayose** 
+* **Roberth Riyu Tamayose** - Desenvolvedor
+
+* **Thiago Kaoru Alves Takehama** - Desenvolvedor
 
 
 
