@@ -1,0 +1,9 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}Projeto Ocean - Previsao de Tempo e Mares
+${licensePrefix}Engenharia de Software III
+${licensePrefix}Faculdade de Tecnologia - UNICAMP
+<#if licenseLast??>
+${licenseLast}
+</#if>
