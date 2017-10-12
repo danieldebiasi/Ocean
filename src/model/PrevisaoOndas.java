@@ -13,8 +13,16 @@ package model;
 public class PrevisaoOndas extends Previsao {
 
     private String agitacao;
-    private String ventoVel;
+    private int ventoVel;
     private String ventoDir;
+    
+    public PrevisaoOndas(int codCidade, String dia, String agitacao, int ventoVel, String ventoDir){
+        this.codCidade = codCidade;
+        this.dia = dia;
+        this.agitacao = agitacao;
+        this.ventoVel = ventoVel;
+        this.ventoDir = ventoDir;
+    }
     
     /**
      * @return the agitacao
@@ -26,7 +34,7 @@ public class PrevisaoOndas extends Previsao {
     /**
      * @return the ventoVel
      */
-    public String getVentoVel() {
+    public int getVentoVel() {
         return ventoVel;
     }
 
@@ -47,7 +55,7 @@ public class PrevisaoOndas extends Previsao {
     /**
      * @param ventoVel the ventoVel to set
      */
-    public void setVentoVel(String ventoVel) {
+    public void setVentoVel(int ventoVel) {
         this.ventoVel = ventoVel;
     }
 

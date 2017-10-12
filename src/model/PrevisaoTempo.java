@@ -16,6 +16,14 @@ public class PrevisaoTempo extends Previsao {
     private int minima;
     private int maxima;
     
+    public PrevisaoTempo(int codCidade, String dia, String tempo, int minima, int maxima){
+        this.codCidade = codCidade;
+        this.dia = dia;
+        this.tempo = tempo;
+        this.minima = minima;
+        this.maxima = maxima;
+    }
+    
     /**
      * @return the tempo
      */

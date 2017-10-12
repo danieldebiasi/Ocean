@@ -12,22 +12,14 @@ package model;
  */
 abstract class Previsao {
 
-    private String cidade;
-    private String estado;
-    private String dia;
+    protected int codCidade;
+    protected String dia;
     
     /**
-     * @return the cidade
+     * @return the codCidade
      */
-    public String getCidade() {
-        return cidade;
-    }
-
-    /**
-     * @return the estado
-     */
-    public String getEstado() {
-        return estado;
+    public int getCodCidade() {
+        return codCidade;
     }
 
     /**
@@ -40,16 +32,10 @@ abstract class Previsao {
     /**
      * @param cidade the cidade to set
      */
-    public void setCidade(String cidade) {
-        this.cidade = cidade;
+    public void setCodCidade(int cidade) {
+        this.codCidade = cidade;
     }
 
-    /**
-     * @param estado the estado to set
-     */
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
 
     /**
      * @param dia the dia to set
