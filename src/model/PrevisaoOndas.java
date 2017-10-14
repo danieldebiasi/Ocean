@@ -14,7 +14,7 @@ public class PrevisaoOndas extends Previsao {
 
     private String agitacao;
     private int ventoVel;
-    private String ventoDir;
+    private String ventoDir;    
     
     public PrevisaoOndas(int codCidade, String dia, String agitacao, int ventoVel, String ventoDir){
         this.codCidade = codCidade;

@@ -49,7 +49,7 @@ public class Xml {
                         previsao.setDia(kn.getTextContent());
                     }
                     if(kn.getNodeName().equals("tempo")){
-                        previsao.setTempo(kn.getTextContent());
+                        previsao.setTempo(previsao.legendaTempo(kn.getTextContent()));
                     }
                     if(kn.getNodeName().equals("maxima")){
                         previsao.setMaxima(Integer.parseInt(kn.getTextContent()));
