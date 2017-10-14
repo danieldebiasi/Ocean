@@ -17,31 +17,32 @@ import java.util.List;
  *
  * @author Grupo Gambiarra
  */
-public class PrevisaoOndasDAO extends DAO {
+public class PrevisaoOndasDao extends Dao {
     
-    private static PrevisaoOndasDAO instance;
+    private static PrevisaoOndasDao instance;
     private static Connection myCONN;
     
-    private PrevisaoOndasDAO() {
+    private PrevisaoOndasDao() {
     }
 
-    public static PrevisaoOndasDAO getInstance() {
+    public static PrevisaoOndasDao getInstance() {
         if (instance == null) {
-            instance = new PrevisaoOndasDAO();
+            instance = new PrevisaoOndasDao();
             myCONN = instance.connect();
         }
         return instance;
     }
 
-    public void create(int cidade, String dia, String agitacao, int ventoVel, String ventoDir) {
+    public void create(PrevisaoOndas previsao) {
         PreparedStatement stmt;
         try {
-            stmt = myCONN.prepareStatement("INSERT INTO ondas (cod_cidade, dia, agitacao, vento_vel, vento_dir) VALUES (?,?,?,?,?)");
-            stmt.setInt(1, cidade);
-            stmt.setString(2, dia);
-            stmt.setString(3, agitacao);
-            stmt.setInt(4, ventoVel);
-            stmt.setString(5, ventoDir);
+            stmt = myCONN.prepareStatement("INSERT INTO ondas (cod_cidade, dia, agitacao, vento_vel, vento_dir) VALUES (?,?,?,?,?) ON DUPLICATE KEY "
+                    + "UPDATE agitacao='"+previsao.getAgitacao()+"', vento_vel="+previsao.getVentoVel()+", vento_dir='"+previsao.getVentoDir()+"'");
+            stmt.setInt(1, previsao.getCodCidade());
+            stmt.setString(2, previsao.getDia());
+            stmt.setString(3, previsao.getAgitacao());
+            stmt.setInt(4, previsao.getVentoVel());
+            stmt.setString(5, previsao.getVentoDir());
             this.executeUpdate(stmt);
             stmt.close();
         } catch (SQLException ex) {

@@ -17,31 +17,31 @@ import java.util.List;
  *
  * @author Grupo Gambiarra
  */
-public class PrevisaoTempoDAO extends DAO {
+public class PrevisaoTempoDao extends Dao {
     
-    private static PrevisaoTempoDAO instance;
+    private static PrevisaoTempoDao instance;
     private static Connection myCONN;
     
-    private PrevisaoTempoDAO() {
+    private PrevisaoTempoDao() {
     }
 
-    public static PrevisaoTempoDAO getInstance() {
+    public static PrevisaoTempoDao getInstance() {
         if (instance == null) {
-            instance = new PrevisaoTempoDAO();
+            instance = new PrevisaoTempoDao();
             myCONN = instance.connect();
         }
         return instance;
     }
 
-    public void create(int cidade, String dia, String tempo, int minima, int maxima) {
+    public void create(PrevisaoTempo previsao) {
         PreparedStatement stmt;
         try {
             stmt = myCONN.prepareStatement("INSERT INTO tempo (cod_cidade, dia, cod_tempo, minima, maxima) VALUES (?,?,?,?,?)");
-            stmt.setInt(1, cidade);
-            stmt.setString(2, dia);
-            stmt.setString(3, tempo);
-            stmt.setInt(4, minima);
-            stmt.setInt(5, maxima);
+            stmt.setInt(1, previsao.getCodCidade());
+            stmt.setString(2, previsao.getDia());
+            stmt.setString(3, previsao.getTempo());
+            stmt.setInt(4, previsao.getMinima());
+            stmt.setInt(5, previsao.getMaxima());
             this.executeUpdate(stmt);
             stmt.close();
         } catch (SQLException ex) {

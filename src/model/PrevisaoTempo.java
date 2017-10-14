@@ -24,6 +24,9 @@ public class PrevisaoTempo extends Previsao {
         this.maxima = maxima;
     }
     
+    public PrevisaoTempo(){
+    }
+    
     /**
      * @return the tempo
      */

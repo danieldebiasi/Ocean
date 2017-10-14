@@ -16,7 +16,7 @@ import java.sql.SQLException;
  *
  * @author Grupo Gambiarra
  */
-abstract class DAO {
+abstract class Dao {
     private Connection con;
     private final String DBURL = "jdbc:mysql:///ocean";
     private final String username = "root";

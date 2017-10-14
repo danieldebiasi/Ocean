@@ -24,6 +24,9 @@ public class PrevisaoOndas extends Previsao {
         this.ventoDir = ventoDir;
     }
     
+    public PrevisaoOndas(){
+    }
+    
     /**
      * @return the agitacao
      */
