@@ -41,7 +41,7 @@ public class PrevisaoOndasDao extends Dao {
             stmt.setInt(1, previsao.getCodCidade());
             stmt.setString(2, previsao.getDia());
             stmt.setString(3, previsao.getAgitacao());
-            stmt.setInt(4, previsao.getVentoVel());
+            stmt.setFloat(4, previsao.getVentoVel());
             stmt.setString(5, previsao.getVentoDir());
             this.executeUpdate(stmt);
             stmt.close();

@@ -13,10 +13,10 @@ package model;
 public class PrevisaoOndas extends Previsao {
 
     private String agitacao;
-    private int ventoVel;
+    private float ventoVel;
     private String ventoDir;    
     
-    public PrevisaoOndas(int codCidade, String dia, String agitacao, int ventoVel, String ventoDir){
+    public PrevisaoOndas(int codCidade, String dia, String agitacao, float ventoVel, String ventoDir){
         this.codCidade = codCidade;
         this.dia = dia;
         this.agitacao = agitacao;
@@ -37,7 +37,7 @@ public class PrevisaoOndas extends Previsao {
     /**
      * @return the ventoVel
      */
-    public int getVentoVel() {
+    public float getVentoVel() {
         return ventoVel;
     }
 
@@ -58,7 +58,7 @@ public class PrevisaoOndas extends Previsao {
     /**
      * @param ventoVel the ventoVel to set
      */
-    public void setVentoVel(int ventoVel) {
+    public void setVentoVel(float ventoVel) {
         this.ventoVel = ventoVel;
     }
 

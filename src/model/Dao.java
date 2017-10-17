@@ -17,10 +17,10 @@ import java.sql.SQLException;
  * @author Grupo Gambiarra
  */
 abstract class Dao {
-    private Connection con;
-    private final String DBURL = "jdbc:mysql:///ocean";
-    private final String username = "root";
-    private final String password = "root";
+    private static Connection con;
+    private static final String DBURL = "jdbc:mysql:///ocean";
+    private static final String username = "root";
+    private static final String password = "root";
     
     protected Connection connect() {
         if (con == null) {

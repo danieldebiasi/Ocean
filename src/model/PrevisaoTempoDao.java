@@ -24,7 +24,7 @@ public class PrevisaoTempoDao extends Dao {
     
     private PrevisaoTempoDao() {
     }
-
+    
     public static PrevisaoTempoDao getInstance() {
         if (instance == null) {
             instance = new PrevisaoTempoDao();
