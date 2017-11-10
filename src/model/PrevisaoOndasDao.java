@@ -36,13 +36,14 @@ public class PrevisaoOndasDao extends Dao {
     public void create(PrevisaoOndas previsao) {
         PreparedStatement stmt;
         try {
-            stmt = myCONN.prepareStatement("INSERT INTO ondas (cod_cidade, dia, agitacao, vento_vel, vento_dir) VALUES (?,?,?,?,?) ON DUPLICATE KEY "
+            stmt = myCONN.prepareStatement("INSERT INTO ondas (cod_cidade, dia, hora, agitacao, vento_vel, vento_dir) VALUES (?,?,?,?,?,?) ON DUPLICATE KEY "
                     + "UPDATE agitacao='"+previsao.getAgitacao()+"', vento_vel="+previsao.getVentoVel()+", vento_dir='"+previsao.getVentoDir()+"'");
             stmt.setInt(1, previsao.getCodCidade());
             stmt.setString(2, previsao.getDia());
-            stmt.setString(3, previsao.getAgitacao());
-            stmt.setFloat(4, previsao.getVentoVel());
-            stmt.setString(5, previsao.getVentoDir());
+            stmt.setString(3, previsao.getHora());
+            stmt.setString(4, previsao.getAgitacao());
+            stmt.setFloat(5, previsao.getVentoVel());
+            stmt.setString(6, previsao.getVentoDir());
             this.executeUpdate(stmt);
             stmt.close();
         } catch (SQLException ex) {
@@ -52,7 +53,8 @@ public class PrevisaoOndasDao extends Dao {
     private PrevisaoOndas buildObject(ResultSet rs) {
         PrevisaoOndas previsao = null;
         try {
-            previsao = new PrevisaoOndas(rs.getInt("cod_cidade"), rs.getString("dia"), rs.getString("agitacao"), rs.getInt("vento_vel"), rs.getString("vento_dir"));
+            previsao = new PrevisaoOndas(rs.getInt("cod_cidade"), rs.getString("dia"), rs.getString("hora"),
+                    rs.getString("agitacao"), rs.getInt("vento_vel"), rs.getString("vento_dir"));
         } catch (SQLException e) {
         }
         return previsao;

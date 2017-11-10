@@ -28,8 +28,6 @@ public class Xml {
 
     public List<PrevisaoTempo> getUpdatedPrevisaoTempo(int codCidade) throws Exception {
         List<PrevisaoTempo> previsoes = new ArrayList<>();
-        PrevisaoTempo previsao = new PrevisaoTempo();
-        previsao.setCodCidade(codCidade);
         
         URL url = new URL("http://servicos.cptec.inpe.br/XML/cidade/7dias/"+codCidade+"/previsao.xml");
         URLConnection connection = url.openConnection();
@@ -42,6 +40,8 @@ public class Xml {
         for(int i = 0; i < nodes.getLength(); i++){
             Node n = nodes.item(i);
             if(n.getNodeName().equals("previsao")){
+                PrevisaoTempo previsao = new PrevisaoTempo();
+                previsao.setCodCidade(codCidade);
                 NodeList nl = n.getChildNodes();
                 for(int k = 0; k < nl.getLength(); k++){
                     Node kn = nl.item(k);
@@ -49,7 +49,7 @@ public class Xml {
                         previsao.setDia(kn.getTextContent());
                     }
                     if(kn.getNodeName().equals("tempo")){
-                        previsao.setTempo(previsao.legendaTempo(kn.getTextContent()));
+                        previsao.setTempo(kn.getTextContent());
                     }
                     if(kn.getNodeName().equals("maxima")){
                         previsao.setMaxima(Integer.parseInt(kn.getTextContent()));
@@ -58,17 +58,15 @@ public class Xml {
                         previsao.setMinima(Integer.parseInt(kn.getTextContent()));
                     }
                 }
-                previsoes.add(previsao);
+                previsoes.add(previsao);                
             }
         }
-        
+     
         return previsoes;
     }
     
     public List<PrevisaoOndas> getUpdatedPrevisaoOndas(int codCidade) throws Exception {
         List<PrevisaoOndas> previsoes = new ArrayList<>();
-        PrevisaoOndas previsao = new PrevisaoOndas();
-        previsao.setCodCidade(codCidade);
         
         URL url = new URL("http://servicos.cptec.inpe.br/XML/cidade/"+codCidade+"/todos/tempos/ondas.xml");
         URLConnection connection = url.openConnection();
@@ -81,17 +79,22 @@ public class Xml {
         for(int i = 0; i < nodes.getLength(); i++){
             Node n = nodes.item(i);
             if(n.getNodeName().equals("previsao")){
+                PrevisaoOndas previsao = new PrevisaoOndas();
+                previsao.setCodCidade(codCidade);
                 NodeList nl = n.getChildNodes();
                 for(int k = 0; k < nl.getLength(); k++){
                     Node kn = nl.item(k);
                     if(kn.getNodeName().equals("dia")){
-                        previsao.setDia(kn.getTextContent());
+                        String[] split = kn.getTextContent().split(" ");
+                        previsao.setDia(split[0]);
+                        previsao.setHora(split[1]);
+                        System.out.println(split[0]+"-"+split[1]);
                     }
                     if(kn.getNodeName().equals("agitacao")){
                         previsao.setAgitacao(kn.getTextContent());
                     }
                     if(kn.getNodeName().equals("vento")){
-                        previsao.setVentoVel(Integer.parseInt(kn.getTextContent()));
+                        previsao.setVentoVel(Float.parseFloat(kn.getTextContent()));
                     }
                     if(kn.getNodeName().equals("vento_dir")){
                         previsao.setVentoDir(kn.getTextContent());

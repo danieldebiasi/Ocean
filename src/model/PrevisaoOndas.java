@@ -14,11 +14,13 @@ public class PrevisaoOndas extends Previsao {
 
     private String agitacao;
     private float ventoVel;
-    private String ventoDir;    
+    private String ventoDir;  
+    private String hora;
     
-    public PrevisaoOndas(int codCidade, String dia, String agitacao, float ventoVel, String ventoDir){
+    public PrevisaoOndas(int codCidade, String dia, String hora, String agitacao, float ventoVel, String ventoDir){
         this.codCidade = codCidade;
         this.dia = dia;
+        this.hora = hora;
         this.agitacao = agitacao;
         this.ventoVel = ventoVel;
         this.ventoDir = ventoDir;
@@ -47,6 +49,13 @@ public class PrevisaoOndas extends Previsao {
     public String getVentoDir() {
         return ventoDir;
     }
+    
+    /**
+     * @return the hora
+     */
+    public String getHora(){
+        return hora;
+    }
 
     /**
      * @param agitacao the agitacao to set
@@ -67,6 +76,13 @@ public class PrevisaoOndas extends Previsao {
      */
     public void setVentoDir(String ventoDir) {
         this.ventoDir = ventoDir;
+    }
+    
+    /**
+     * @param hora the hora to set
+     */
+    public void setHora(String hora){
+        this.hora = hora;
     }
     
 }

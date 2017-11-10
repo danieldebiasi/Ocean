@@ -36,7 +36,8 @@ public class PrevisaoTempoDao extends Dao {
     public void create(PrevisaoTempo previsao) {
         PreparedStatement stmt;
         try {
-            stmt = myCONN.prepareStatement("INSERT INTO tempo (cod_cidade, dia, cod_tempo, minima, maxima) VALUES (?,?,?,?,?)");
+            stmt = myCONN.prepareStatement("INSERT INTO tempo (cod_cidade, dia, cod_tempo, minima, maxima) VALUES (?,?,?,?,?) ON DUPLICATE KEY "
+                    + "UPDATE cod_tempo='"+previsao.getTempo()+"', minima="+previsao.getMinima()+", maxima="+previsao.getMaxima());
             stmt.setInt(1, previsao.getCodCidade());
             stmt.setString(2, previsao.getDia());
             stmt.setString(3, previsao.getTempo());

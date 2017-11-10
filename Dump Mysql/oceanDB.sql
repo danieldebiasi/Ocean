@@ -50,10 +50,12 @@ DROP TABLE IF EXISTS `ondas`;
 CREATE TABLE `ondas` (
   `cod_cidade` int(11) NOT NULL,
   `dia` varchar(11) NOT NULL,
+  `hora` varchar(4) NOT NULL,
   `agitacao` varchar(15) NOT NULL,
-  `vento_vel` int(11) NOT NULL,
+  `vento_vel` float NOT NULL,
   `vento_dir` varchar(15) NOT NULL,
-  PRIMARY KEY (`cod_cidade`,`dia`)
+  PRIMARY KEY (`cod_cidade`,`dia`,`hora`),
+  KEY `data` (`dia`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -109,4 +111,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-10-16 21:54:16
+-- Dump completed on 2017-11-10 16:43:14
