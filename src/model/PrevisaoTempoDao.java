@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -22,9 +24,6 @@ public class PrevisaoTempoDao extends Dao {
     private static PrevisaoTempoDao instance;
     private static Connection myCONN;
     
-    private PrevisaoTempoDao() {
-    }
-    
     public static PrevisaoTempoDao getInstance() {
         if (instance == null) {
             instance = new PrevisaoTempoDao();
@@ -33,19 +32,31 @@ public class PrevisaoTempoDao extends Dao {
         return instance;
     }
 
-    public void create(PrevisaoTempo previsao) {
+    public void create(List<PrevisaoTempo> previsoes) {
         PreparedStatement stmt;
+        String sql = "INSERT INTO tempo (cod_cidade, dia, cod_tempo, minima, maxima) VALUES (?,?,?,?,?) ON DUPLICATE KEY "
+                    + "UPDATE cod_tempo=?, minima=?, maxima=?";          
+        
         try {
-            stmt = myCONN.prepareStatement("INSERT INTO tempo (cod_cidade, dia, cod_tempo, minima, maxima) VALUES (?,?,?,?,?) ON DUPLICATE KEY "
-                    + "UPDATE cod_tempo='"+previsao.getTempo()+"', minima="+previsao.getMinima()+", maxima="+previsao.getMaxima());
-            stmt.setInt(1, previsao.getCodCidade());
-            stmt.setString(2, previsao.getDia());
-            stmt.setString(3, previsao.getTempo());
-            stmt.setInt(4, previsao.getMinima());
-            stmt.setInt(5, previsao.getMaxima());
-            this.executeUpdate(stmt);
+            stmt = myCONN.prepareStatement(sql);
+            
+            for(int i = 0; i < previsoes.size(); i++){
+                PrevisaoTempo previsao = previsoes.get(i);
+                stmt.setInt(1, previsao.getCodCidade());
+                stmt.setString(2, previsao.getDia());
+                stmt.setString(3, previsao.getTempo());
+                stmt.setInt(4, previsao.getMinima());
+                stmt.setInt(5, previsao.getMaxima());
+                stmt.setString(6, previsao.getTempo());
+                stmt.setInt(7, previsao.getMinima());
+                stmt.setInt(8, previsao.getMaxima());
+                stmt.addBatch();
+            }
+                       
+            stmt.executeBatch();
             stmt.close();
         } catch (SQLException ex) {
+            Logger.getLogger(PrevisaoTempoDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

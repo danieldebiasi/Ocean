@@ -34,7 +34,7 @@ public class PrevisaoOndasDaoTest {
         }
         
         for(int i = 0; i < previsoes.size(); i++){
-            pteste.create(previsoes.get(i));
+            pteste.create(previsoes);
         }
     }
     

@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -21,9 +23,6 @@ public class PrevisaoOndasDao extends Dao {
     
     private static PrevisaoOndasDao instance;
     private static Connection myCONN;
-    
-    private PrevisaoOndasDao() {
-    }
 
     public static PrevisaoOndasDao getInstance() {
         if (instance == null) {
@@ -33,20 +32,32 @@ public class PrevisaoOndasDao extends Dao {
         return instance;
     }
 
-    public void create(PrevisaoOndas previsao) {
+    public void create(List<PrevisaoOndas> previsoes) {
         PreparedStatement stmt;
+        String sql = "INSERT INTO ondas (cod_cidade, dia, hora, agitacao, vento_vel, vento_dir) VALUES (?,?,?,?,?,?) ON DUPLICATE KEY "
+                    + "UPDATE agitacao=?, vento_vel=?, vento_dir=?";
+        
         try {
-            stmt = myCONN.prepareStatement("INSERT INTO ondas (cod_cidade, dia, hora, agitacao, vento_vel, vento_dir) VALUES (?,?,?,?,?,?) ON DUPLICATE KEY "
-                    + "UPDATE agitacao='"+previsao.getAgitacao()+"', vento_vel="+previsao.getVentoVel()+", vento_dir='"+previsao.getVentoDir()+"'");
-            stmt.setInt(1, previsao.getCodCidade());
-            stmt.setString(2, previsao.getDia());
-            stmt.setString(3, previsao.getHora());
-            stmt.setString(4, previsao.getAgitacao());
-            stmt.setFloat(5, previsao.getVentoVel());
-            stmt.setString(6, previsao.getVentoDir());
-            this.executeUpdate(stmt);
+            stmt = myCONN.prepareStatement(sql);
+            
+            for(int i = 0; i < previsoes.size(); i++){
+                PrevisaoOndas previsao = previsoes.get(i);
+                stmt.setInt(1, previsao.getCodCidade());
+                stmt.setString(2, previsao.getDia());
+                stmt.setString(3, previsao.getHora());
+                stmt.setString(4, previsao.getAgitacao());
+                stmt.setFloat(5, previsao.getVentoVel());
+                stmt.setString(6, previsao.getVentoDir());
+                stmt.setString(7, previsao.getAgitacao());
+                stmt.setFloat(8, previsao.getVentoVel());
+                stmt.setString(9, previsao.getVentoDir());
+                stmt.addBatch();
+            }
+         
+            stmt.executeBatch();
             stmt.close();
         } catch (SQLException ex) {
+            Logger.getLogger(PrevisaoOndasDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
