@@ -63,4 +63,13 @@ public class CidadeDao extends Dao {
     public List<Cidade> retrieveAllByEstado(String estado) {
         return this.retrieveGeneric("SELECT * FROM cidades WHERE estado='"+estado+"' ORDER BY cod_cidade");
     }
+    
+    public List<Cidade> retriveCodCidade(String estado, String cidade){
+        return this.retrieveGeneric("SELECT * FROM cidades WHERE estado='"+estado+"' and cidade='"+cidade+"'");
+    }
+    
+    public Cidade retrieveCidade(int codCidade){
+        List<Cidade> cidade = this.retrieveGeneric("SELECT * FROM cidades WHERE cod_cidade="+codCidade);
+        return cidade.get(0);
+    }
 }

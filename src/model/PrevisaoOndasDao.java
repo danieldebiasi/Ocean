@@ -39,9 +39,9 @@ public class PrevisaoOndasDao extends Dao {
         
         try {
             stmt = myCONN.prepareStatement(sql);
+            myCONN.setAutoCommit(false);
             
-            for(int i = 0; i < previsoes.size(); i++){
-                PrevisaoOndas previsao = previsoes.get(i);
+            for(PrevisaoOndas previsao : previsoes){
                 stmt.setInt(1, previsao.getCodCidade());
                 stmt.setString(2, previsao.getDia());
                 stmt.setString(3, previsao.getHora());
@@ -52,9 +52,11 @@ public class PrevisaoOndasDao extends Dao {
                 stmt.setFloat(8, previsao.getVentoVel());
                 stmt.setString(9, previsao.getVentoDir());
                 stmt.addBatch();
-            }
-         
+                stmt.clearParameters();
+            }         
+            
             stmt.executeBatch();
+            myCONN.commit();
             stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(PrevisaoOndasDao.class.getName()).log(Level.SEVERE, null, ex);
@@ -67,6 +69,7 @@ public class PrevisaoOndasDao extends Dao {
             previsao = new PrevisaoOndas(rs.getInt("cod_cidade"), rs.getString("dia"), rs.getString("hora"),
                     rs.getString("agitacao"), rs.getInt("vento_vel"), rs.getString("vento_dir"));
         } catch (SQLException e) {
+            Logger.getLogger(PrevisaoOndasDao.class.getName()).log(Level.SEVERE, null, e);
         }
         return previsao;
     }
@@ -84,6 +87,7 @@ public class PrevisaoOndasDao extends Dao {
             rs.close();
             stmt.close();
         } catch (SQLException ex) {
+            Logger.getLogger(PrevisaoOndasDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return previsoes;
     }
@@ -93,17 +97,12 @@ public class PrevisaoOndasDao extends Dao {
     }
     
     public List<PrevisaoOndas> retrievePrevisoes(int cidade, String data){
-        List<PrevisaoOndas> previsoes = this.retrieveGeneric("SELECT * FROM ondas WHERE cod_cidade="+cidade+" AND data='"+data+"'");
+        List<PrevisaoOndas> previsoes = this.retrieveGeneric("SELECT * FROM ondas WHERE cod_cidade="+cidade+" AND dia>='"+data+"'");
         return previsoes;
     }
     
-    public PrevisaoOndas retrieveByData(int cidade, String data) {
-        PrevisaoOndas previsao = null;
-        List<PrevisaoOndas> previsoes = this.retrieveGeneric("SELECT * FROM ondas WHERE cod_cidade="+cidade+" AND data='"+data+"'");
-        if(!previsoes.isEmpty()){
-            previsao = previsoes.get(0);
-        }
-        return previsao;
-    }
+    public List<PrevisaoOndas> retrieveByData(int cidade, String data) {        
+        return this.retrieveGeneric("SELECT * FROM ondas WHERE cod_cidade="+cidade+" AND data='"+data+"'");
+     }
 
 }

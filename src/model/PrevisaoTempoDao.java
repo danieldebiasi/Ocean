@@ -39,9 +39,9 @@ public class PrevisaoTempoDao extends Dao {
         
         try {
             stmt = myCONN.prepareStatement(sql);
+            myCONN.setAutoCommit(false);
             
-            for(int i = 0; i < previsoes.size(); i++){
-                PrevisaoTempo previsao = previsoes.get(i);
+            for(PrevisaoTempo previsao : previsoes){
                 stmt.setInt(1, previsao.getCodCidade());
                 stmt.setString(2, previsao.getDia());
                 stmt.setString(3, previsao.getTempo());
@@ -51,9 +51,11 @@ public class PrevisaoTempoDao extends Dao {
                 stmt.setInt(7, previsao.getMinima());
                 stmt.setInt(8, previsao.getMaxima());
                 stmt.addBatch();
+                stmt.clearParameters();
             }
                        
             stmt.executeBatch();
+            myCONN.commit();
             stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(PrevisaoTempoDao.class.getName()).log(Level.SEVERE, null, ex);
@@ -63,9 +65,11 @@ public class PrevisaoTempoDao extends Dao {
     private PrevisaoTempo buildObject(ResultSet rs) {
         PrevisaoTempo previsao = null;
         try {
-            previsao = new PrevisaoTempo(rs.getInt("cod_cidade"), rs.getString("dia"), rs.getString("tempo"), rs.getInt("minima"), rs.getInt("maxima"));
+            previsao = new PrevisaoTempo(rs.getInt("cod_cidade"), rs.getString("dia"), rs.getString("cod_tempo"), rs.getInt("minima"), rs.getInt("maxima"));
         } catch (SQLException e) {
+            Logger.getLogger(PrevisaoTempoDao.class.getName()).log(Level.SEVERE, null, e);
         }
+        
         return previsao;
     }
     
@@ -91,13 +95,12 @@ public class PrevisaoTempoDao extends Dao {
     }
     
     public List<PrevisaoTempo> retrievePrevisoes(int cidade, String data){
-        List<PrevisaoTempo> previsoes = this.retrieveGeneric("SELECT * FROM tempo WHERE cod_cidade="+cidade+" AND data='"+data+"'");
-        return previsoes;
+        return this.retrieveGeneric("SELECT * FROM tempo WHERE cod_cidade="+cidade+" AND dia>='"+data+"'");
     }
     
     public PrevisaoTempo retrieveByData(int cidade, String data) {
         PrevisaoTempo previsao = null;
-        List<PrevisaoTempo> previsoes = this.retrieveGeneric("SELECT * FROM tempo WHERE cod_cidade="+cidade+" AND data='"+data+"'");
+        List<PrevisaoTempo> previsoes = this.retrieveGeneric("SELECT * FROM tempo WHERE cod_cidade="+cidade+" AND dia='"+data+"'");
         if(!previsoes.isEmpty()){
             previsao = previsoes.get(0);
         }

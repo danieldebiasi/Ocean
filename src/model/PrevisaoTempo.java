@@ -69,8 +69,9 @@ public class PrevisaoTempo extends Previsao {
         this.maxima = maxima;
     }
     
-    public String legendaTempo(String s){
+    public String legendaTempo(){
         String legTempo = null;
+        String s = this.getTempo();
         
         if(s.equals("ec"))      legTempo = "Encoberto com Chuvas Isoladas";
         if(s.equals("ci"))      legTempo = "Chuvas Isoladas";

@@ -6,6 +6,8 @@
 
 package control;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -13,10 +15,12 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import model.Cidade;
 import model.CidadeDao;
+import model.PrevisaoCompleta;
 import model.PrevisaoOndas;
 import model.PrevisaoOndasDao;
 import model.PrevisaoTempo;
 import model.PrevisaoTempoDao;
+import model.Relatorio;
 import model.Xml;
 
 /**
@@ -38,17 +42,15 @@ public class Controle {
         
         for(int i = 0; i < cidades.size(); i++){
             try {
-                listptempo = xml.getUpdatedPrevisaoTempo(cidades.get(i).getCodCidade());
-                listpondas = xml.getUpdatedPrevisaoOndas(cidades.get(i).getCodCidade());
-                                
-                ptempo.create(listptempo);                
-               
-                pondas.create(listpondas);               
-                
+                listptempo.addAll(xml.getUpdatedPrevisaoTempo(cidades.get(i).getCodCidade()));
+                listpondas.addAll(xml.getUpdatedPrevisaoOndas(cidades.get(i).getCodCidade()));
             } catch (Exception ex) {
                 Logger.getLogger(Controle.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        ptempo.create(listptempo);                
+        pondas.create(listpondas);
     }
     
     public DefaultComboBoxModel getCidades(Object estado){
@@ -63,6 +65,73 @@ public class Controle {
         }
         
         return MODEL;
+    }
+    
+    public int getCodCidade(String estado, String cidade){
+       CidadeDao cidadeDao = CidadeDao.getInstance();
+       return cidadeDao.retriveCodCidade(estado, cidade).get(0).getCodCidade();
+    }
+    
+    public List<PrevisaoCompleta> obterPrevisoes(int codCidade, String dia){
+        PrevisaoTempoDao ptempoDao = PrevisaoTempoDao.getInstance();
+        PrevisaoOndasDao pondasDao = PrevisaoOndasDao.getInstance();
+        List<PrevisaoTempo> ptempo = ptempoDao.retrievePrevisoes(codCidade, dia);
+        List<PrevisaoOndas> pondas = pondasDao.retrievePrevisoes(codCidade, dia);        
+        List<PrevisaoCompleta> previsoes = new ArrayList<>();
+        
+        for(int i = 0; i < 6; i++){
+            List<PrevisaoOndas> pondasData = new ArrayList<>();
+            for(int j = 0; j < 8; j++){
+                try{
+                    pondasData.add(pondas.get((i*8)+j));
+                }catch (IndexOutOfBoundsException ex){
+                    pondasData.add(new PrevisaoOndas(codCidade, "Indisponível", "--", "Indisponível", -1, "Indisponível"));
+                }
+            }
+            PrevisaoCompleta completa = new PrevisaoCompleta(ptempo.get(i), pondasData);
+            previsoes.add(completa);
+        }
+        
+        return previsoes;
+    }
+    
+    public List<PrevisaoCompleta> obterPrevisao(int codCidade, String dia){
+        PrevisaoTempoDao ptempoDao = PrevisaoTempoDao.getInstance();
+        PrevisaoOndasDao pondasDao = PrevisaoOndasDao.getInstance();
+        PrevisaoTempo ptempo = ptempoDao.retrieveByData(codCidade, dia);
+        List<PrevisaoOndas> pondas = pondasDao.retrievePrevisoes(codCidade, dia);        
+        List<PrevisaoCompleta> previsoes = new ArrayList<>();
+        List<PrevisaoOndas> pondasData = new ArrayList<>();
+        
+        if(ptempo!=null){
+            for(int i = 0; i < 8; i++){
+                    try{
+                        pondasData.add(pondas.get(i));
+                    }catch (IndexOutOfBoundsException ex){
+                        pondasData.add(new PrevisaoOndas(codCidade, "Indisponível", "--", "Indisponível", -1, "Indisponível"));
+                    }
+            }
+            PrevisaoCompleta completa = new PrevisaoCompleta(ptempo, pondasData);
+            previsoes.add(completa);
+        }
+        
+        return previsoes;
+    }
+    
+    public String gerarRelatorio(int codCidade, String dia){
+        List<PrevisaoCompleta> previsoes = obterPrevisoes(codCidade, dia);
+        CidadeDao cidadeDao = CidadeDao.getInstance();
+        LocalDateTime localDate = LocalDateTime.now();
+        String data = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(localDate);
+        Relatorio relatorio = new Relatorio(previsoes, data);
+        
+        Cidade cidade = cidadeDao.retrieveCidade(codCidade);
+        
+        if(relatorio.gerar(cidade.getCodCidade(), cidade.getEstado(), cidade.getCidade())){
+            return "Relatório gerado com sucesso!";
+        }else{
+            return "Erro ao gerar o relatório.";
+        }
     }
     
 }

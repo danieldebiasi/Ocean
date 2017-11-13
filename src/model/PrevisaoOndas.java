@@ -21,9 +21,13 @@ public class PrevisaoOndas extends Previsao {
         this.codCidade = codCidade;
         this.dia = dia;
         this.hora = hora;
-        this.agitacao = agitacao;
         this.ventoVel = ventoVel;
         this.ventoDir = ventoDir;
+        if(agitacao.equals("MuitoForte")){
+            this.agitacao = "Muito Forte";
+        }else{
+            this.agitacao = agitacao;
+        }
     }
     
     public PrevisaoOndas(){
