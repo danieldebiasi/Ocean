@@ -45,7 +45,8 @@ public class TelaLoad extends javax.swing.JFrame {
         SwingWorker worker = new SwingWorker() {
           @Override
           public Void doInBackground() throws Exception {
-              Controle.inicializar();
+              //Controle.inicializar();
+              Thread.sleep(2000);
               return null;
           }
           
@@ -72,11 +73,8 @@ public class TelaLoad extends javax.swing.JFrame {
         jLabelLogo = new javax.swing.JLabel();
         jLabelTitulo = new javax.swing.JLabel();
         jLabelSubtitulo = new javax.swing.JLabel();
-        jProgressBar1 = new javax.swing.JProgressBar();
-        jLabelStatus = new javax.swing.JLabel();
         jLabelRodape = new javax.swing.JLabel();
         jLabelFechar = new javax.swing.JLabel();
-        jLabelMinimizar = new javax.swing.JLabel();
         jLabelTitulo1 = new javax.swing.JLabel();
         jLabelBackground = new javax.swing.JLabel();
 
@@ -105,12 +103,6 @@ public class TelaLoad extends javax.swing.JFrame {
         jLabelSubtitulo.setForeground(new java.awt.Color(255, 255, 255));
         jLabelSubtitulo.setText("Previsão de Tempo e Ondas");
 
-        jProgressBar1.setIndeterminate(true);
-
-        jLabelStatus.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabelStatus.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelStatus.setText("Atualizando Dados...");
-
         jLabelRodape.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabelRodape.setForeground(new java.awt.Color(255, 255, 255));
         jLabelRodape.setText("• 2017 • Desenvolvido por Gambiarra •");
@@ -120,14 +112,6 @@ public class TelaLoad extends javax.swing.JFrame {
         jLabelFechar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 jLabelFecharMouseReleased(evt);
-            }
-        });
-
-        jLabelMinimizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/minimizarCinza.png"))); // NOI18N
-        jLabelMinimizar.setToolTipText("Minimizar");
-        jLabelMinimizar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                jLabelMinimizarMouseReleased(evt);
             }
         });
 
@@ -148,58 +132,40 @@ public class TelaLoad extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(60, 60, 60)
-                                .addComponent(jLabelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabelStatus))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(258, 258, 258)
-                                .addComponent(jLabelTitulo)))
-                        .addGap(0, 61, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jLabelTitulo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelMinimizar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelFechar))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 202, Short.MAX_VALUE)
+                .addComponent(jLabelRodape)
+                .addGap(197, 197, 197))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addComponent(jLabelTitulo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(46, 46, 46)
+                .addComponent(jLabelFechar))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(63, 63, 63)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(198, 198, 198)
+                        .addComponent(jLabelTitulo))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabelRodape)
-                        .addGap(197, 197, 197))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(142, 142, 142)
                         .addComponent(jLabelSubtitulo)
-                        .addGap(229, 229, 229))))
+                        .addGap(158, 158, 158)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabelMinimizar)
                     .addComponent(jLabelFechar)
                     .addComponent(jLabelTitulo1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(31, 31, 31)
                 .addComponent(jLabelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jLabelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelSubtitulo)
-                .addGap(24, 24, 24)
-                .addComponent(jLabelStatus)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
                 .addComponent(jLabelRodape)
                 .addGap(21, 21, 21))
         );
@@ -233,10 +199,6 @@ public class TelaLoad extends javax.swing.JFrame {
     private void jLabelFecharMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelFecharMouseReleased
         System.exit(0);
     }//GEN-LAST:event_jLabelFecharMouseReleased
-
-    private void jLabelMinimizarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelMinimizarMouseReleased
-        this.setExtendedState(JFrame.ICONIFIED);
-    }//GEN-LAST:event_jLabelMinimizarMouseReleased
 
     private void jLabelTitulo1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelTitulo1MouseDragged
         int thisX = this.getLocation().x;
@@ -300,15 +262,12 @@ public class TelaLoad extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelBackground;
     private javax.swing.JLabel jLabelFechar;
     private javax.swing.JLabel jLabelLogo;
-    private javax.swing.JLabel jLabelMinimizar;
     private javax.swing.JLabel jLabelRodape;
-    private javax.swing.JLabel jLabelStatus;
     private javax.swing.JLabel jLabelSubtitulo;
     private javax.swing.JLabel jLabelTitulo;
     private javax.swing.JLabel jLabelTitulo1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JProgressBar jProgressBar1;
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {

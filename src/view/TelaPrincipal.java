@@ -9,9 +9,12 @@ import control.Controle;
 import diu.swe.habib.JPanelSlider.JPanelSlider;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -22,6 +25,7 @@ import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import model.PrevisaoCompleta;
@@ -66,6 +70,31 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jXDatePickerPeriodo.setDate(jXDatePickerPeriodo.getLinkDay());
         getRootPane().setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
         setIcon();
+        
+        start();
+    }
+    
+    private void start(){
+        jLabelAtualizando.setText("Atualizando dados...");
+        jProgressBarAtualiza.setIndeterminate(true);
+        jButtonAtualiza.setEnabled(false);
+        SwingWorker worker = new SwingWorker() {
+          @Override
+          public Void doInBackground() throws Exception {
+              Controle.inicializar();
+              return null;
+          }
+          
+          @Override
+          public void done(){
+              jProgressBarAtualiza.setIndeterminate(false);
+              jProgressBarAtualiza.setValue(100);
+              jButtonAtualiza.setEnabled(true);
+              jLabelAtualizando.setText("Dados atualizados.");
+          }
+         };
+
+         worker.execute();
     }
 
     /**
@@ -403,6 +432,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabelVentoDir21h_7 = new javax.swing.JLabel();
         jLabelFechar = new javax.swing.JLabel();
         jLabelMinimizar = new javax.swing.JLabel();
+        jPanelAlertas = new javax.swing.JPanel();
+        jLabel86 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTableAlertas = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
+        jLabelAtualizando = new javax.swing.JLabel();
+        jProgressBarAtualiza = new javax.swing.JProgressBar();
+        jButtonAtualiza = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         jMenu1.setText("jMenu1");
@@ -3215,6 +3252,92 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jPanelAlertas.setBackground(new java.awt.Color(0, 0, 102));
+        jPanelAlertas.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.white, null));
+
+        jLabel86.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel86.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel86.setText("Painel de Alertas");
+
+        jTableAlertas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jTableAlertas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(jTableAlertas);
+
+        javax.swing.GroupLayout jPanelAlertasLayout = new javax.swing.GroupLayout(jPanelAlertas);
+        jPanelAlertas.setLayout(jPanelAlertasLayout);
+        jPanelAlertasLayout.setHorizontalGroup(
+            jPanelAlertasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelAlertasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelAlertasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(jPanelAlertasLayout.createSequentialGroup()
+                        .addComponent(jLabel86)
+                        .addGap(0, 473, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanelAlertasLayout.setVerticalGroup(
+            jPanelAlertasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelAlertasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel86)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel2.setOpaque(false);
+
+        jLabelAtualizando.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jLabelAtualizando.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelAtualizando.setText("Atualizando Dados...");
+
+        jProgressBarAtualiza.setIndeterminate(true);
+
+        jButtonAtualiza.setText("Verificar Atualizações");
+        jButtonAtualiza.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAtualizaActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelAtualizando)
+                    .addComponent(jProgressBarAtualiza, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonAtualiza)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButtonAtualiza, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabelAtualizando)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jProgressBarAtualiza, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -3229,8 +3352,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
                         .addComponent(jLabelFechar))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jTabbedPanePrevisoes, javax.swing.GroupLayout.PREFERRED_SIZE, 1237, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 0, 0))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTabbedPanePrevisoes, javax.swing.GroupLayout.PREFERRED_SIZE, 1237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jPanelAlertas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))))
+                .addGap(11, 11, 11))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -3241,11 +3369,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
                     .addComponent(jLabelFechar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPanePrevisoes, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(711, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanelAlertas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(442, Short.MAX_VALUE))
         );
 
         jPanelBackground.add(jPanel1);
-        jPanel1.setBounds(2, 0, 1252, 1120);
+        jPanel1.setBounds(2, 0, 1263, 1120);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/fundo-azul-degrade.jpg"))); // NOI18N
         jPanelBackground.add(jLabel1);
@@ -3255,11 +3387,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelBackground, javax.swing.GroupLayout.DEFAULT_SIZE, 1259, Short.MAX_VALUE)
+            .addComponent(jPanelBackground, javax.swing.GroupLayout.DEFAULT_SIZE, 1262, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelBackground, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
+            .addComponent(jPanelBackground, javax.swing.GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
         );
 
         pack();
@@ -3267,7 +3399,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
    
     private void jLabelFecharMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelFecharMouseReleased
-        System.exit(0);
+        if(JOptionPane.showOptionDialog(null, 
+            "Encerrar o programa?", 
+            "Sair", 
+            JOptionPane.YES_OPTION, 
+            JOptionPane.NO_OPTION, 
+            null, 
+            new String[]{"Sim", "Não"},
+            "default") == JOptionPane.YES_OPTION){
+            System.exit(0);
+        }
     }//GEN-LAST:event_jLabelFecharMouseReleased
 
     private void jLabelMinimizarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelMinimizarMouseReleased
@@ -3582,7 +3723,28 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jButtonRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRelatorioActionPerformed
         Controle controle = new Controle();
         
-        JOptionPane.showMessageDialog(null, controle.gerarRelatorio(Integer.parseInt(jTextFieldCodCidade.getText()), dia));
+        File file = controle.gerarRelatorio(Integer.parseInt(jTextFieldCodCidade.getText()), dia);
+        
+        if(file != null){
+            if(JOptionPane.showOptionDialog(null, 
+            "Relatório gerado com sucesso!", 
+            "Relatório", 
+            JOptionPane.YES_OPTION, 
+            JOptionPane.NO_OPTION, 
+            null, 
+            new String[]{"Abrir Relatório", "OK"},
+            "default") == JOptionPane.YES_OPTION){
+                if(Desktop.isDesktopSupported()){
+                    try {
+                        Desktop.getDesktop().open(file);
+                    } catch (IOException ex) {
+                        Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Erro ao gerar o relatório!", "Erro", 0);
+        }
     }//GEN-LAST:event_jButtonRelatorioActionPerformed
 
     private void jButtonAntBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAntBuscarActionPerformed
@@ -3635,6 +3797,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jComboBoxAntCidadeItemStateChanged
 
+    private void jButtonAtualizaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAtualizaActionPerformed
+        start();
+    }//GEN-LAST:event_jButtonAtualizaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -3672,6 +3838,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAntBuscar;
+    private javax.swing.JButton jButtonAtualiza;
     private javax.swing.JButton jButtonBuscar;
     private javax.swing.JButton jButtonRelatorio;
     private javax.swing.JComboBox<String> jComboBoxAntCidade;
@@ -3762,7 +3929,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel83;
     private javax.swing.JLabel jLabel84;
     private javax.swing.JLabel jLabel85;
+    private javax.swing.JLabel jLabel86;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabelAtualizando;
     private javax.swing.JLabel jLabelAvancar;
     private javax.swing.JLabel jLabelCondicao1;
     private javax.swing.JLabel jLabelCondicao2;
@@ -3966,6 +4135,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelVoltar;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanelAlertas;
     private javax.swing.JPanel jPanelBackground;
     private javax.swing.JPanel jPanelDia1;
     private javax.swing.JPanel jPanelDia2;
@@ -3978,6 +4149,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelPrevisoesAnt;
     private diu.swe.habib.JPanelSlider.JPanelSlider jPanelSliderAntPrevisoes;
     private diu.swe.habib.JPanelSlider.JPanelSlider jPanelSliderPrevisoes;
+    private javax.swing.JProgressBar jProgressBarAtualiza;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator11;
@@ -3995,12 +4168,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
     private javax.swing.JTabbedPane jTabbedPanePrevisoes;
+    private javax.swing.JTable jTableAlertas;
     private javax.swing.JTextField jTextFieldAntCodCidade;
     private javax.swing.JTextField jTextFieldCodCidade;
     private org.jdesktop.swingx.JXDatePicker jXDatePickerPeriodo;
     // End of variables declaration//GEN-END:variables
     
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../imagens/earth.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imagens/earth.png")));
     }
 }

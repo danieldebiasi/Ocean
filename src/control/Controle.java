@@ -6,6 +6,7 @@
 
 package control;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class Controle {
         Xml xml = new Xml();
         
         cidades = cidadeDao.retrieveAll();
-        
+        long start = System.currentTimeMillis();
         for(int i = 0; i < cidades.size(); i++){
             try {
                 listptempo.addAll(xml.getUpdatedPrevisaoTempo(cidades.get(i).getCodCidade()));
@@ -48,9 +49,18 @@ public class Controle {
                 Logger.getLogger(Controle.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        long t01 = System.currentTimeMillis();
         
         ptempo.create(listptempo);                
+        long t02 = System.currentTimeMillis();
+
         pondas.create(listpondas);
+        long t03 = System.currentTimeMillis();
+        
+        System.out.println("Tempo xml: "+(t01-start)/1000);
+        System.out.println("Tempo banco tempo: "+(t02-t01)/1000);
+        System.out.println("Tempo banco ondas: "+(t03-t02)/1000);
+
     }
     
     public DefaultComboBoxModel getCidades(Object estado){
@@ -118,7 +128,7 @@ public class Controle {
         return previsoes;
     }
     
-    public String gerarRelatorio(int codCidade, String dia){
+    public File gerarRelatorio(int codCidade, String dia){
         List<PrevisaoCompleta> previsoes = obterPrevisoes(codCidade, dia);
         CidadeDao cidadeDao = CidadeDao.getInstance();
         LocalDateTime localDate = LocalDateTime.now();
@@ -127,11 +137,7 @@ public class Controle {
         
         Cidade cidade = cidadeDao.retrieveCidade(codCidade);
         
-        if(relatorio.gerar(cidade.getCodCidade(), cidade.getEstado(), cidade.getCidade())){
-            return "Relatório gerado com sucesso!";
-        }else{
-            return "Erro ao gerar o relatório.";
-        }
+        return relatorio.gerar(cidade.getCodCidade(), cidade.getEstado(), cidade.getCidade());
     }
     
 }

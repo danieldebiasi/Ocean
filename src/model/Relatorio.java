@@ -14,11 +14,11 @@ import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfWriter;
-import java.awt.Font;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.nio.file.Files;
+import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,20 +65,20 @@ public class Relatorio {
         this.data = data;
     }
     
-    public boolean gerar(int codCidade, String estado, String cidade){
-        boolean bool = false;
+    public File gerar(int codCidade, String estado, String cidade){
+        File file = null;
         Document document = new Document();
         String[] split = this.data.split(" ");
         String dia[] = split[0].split("/");
         String hora[] = split[1].split(":");
         
         try {
-            File file = new File("Relatorios");
+            file = new File("Relatorios");
             if(!file.exists()){
                 file.mkdir();
             }
             
-            PdfWriter.getInstance(document, new FileOutputStream("Relatorios/relatorio"+dia[0]+dia[1]+dia[2]+"_"+hora[0]+hora[1]+hora[2]+".pdf"));
+            PdfWriter.getInstance(document, new FileOutputStream("Relatorios/relatorio"+codCidade+"_"+dia[0]+dia[1]+dia[2]+"_"+hora[0]+hora[1]+hora[2]+".pdf"));
             
             document.open();
             Phrase phr = new Phrase("Relatório de Previsão de Tempo", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
@@ -136,7 +136,7 @@ public class Relatorio {
                 document.add(br);document.add(br);
             }
             
-            bool = true;
+            file = new File("Relatorios/relatorio"+dia[0]+dia[1]+dia[2]+"_"+hora[0]+hora[1]+hora[2]+".pdf");
             
         } catch (FileNotFoundException | DocumentException ex) {
             Logger.getLogger(Relatorio.class.getName()).log(Level.SEVERE, null, ex);
@@ -144,6 +144,6 @@ public class Relatorio {
             document.close();
         }
         
-        return bool;
+        return file;
     }
 }

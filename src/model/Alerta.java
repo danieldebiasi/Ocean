@@ -12,50 +12,35 @@ package model;
  */
 public class Alerta {
 
-    private String tempo;
-    private String agitacao;
-    private String ventoVel;
+    private PrevisaoTempo previsaoTempo;
+    private PrevisaoOndas previsaoOndas;
     
     /**
-     * @return the tempo
+     * @return the previsaoTempo
      */
-    public String getTempo() {
-        return tempo;
+    public PrevisaoTempo getPrevisaoTempo() {
+        return previsaoTempo;
     }
 
     /**
-     * @return the agitacao
+     * @return the previsaoOndas
      */
-    public String getAgitacao() {
-        return agitacao;
+    public PrevisaoOndas getPrevisaoOndas() {
+        return previsaoOndas;
     }
 
     /**
-     * @return the ventoVel
+     * @param previsaoTempo the previsaoTempo to set
      */
-    public String getVentoVel() {
-        return ventoVel;
+    public void setPrevisaoTempo(PrevisaoTempo previsaoTempo) {
+        this.previsaoTempo = previsaoTempo;
     }
 
     /**
-     * @param tempo the tempo to set
+     * @param previsaoOndas the previsaoOndas to set
      */
-    public void setTempo(String tempo) {
-        this.tempo = tempo;
-    }
-
-    /**
-     * @param agitacao the agitacao to set
-     */
-    public void setAgitacao(String agitacao) {
-        this.agitacao = agitacao;
-    }
-
-    /**
-     * @param ventoVel the ventoVel to set
-     */
-    public void setVentoVel(String ventoVel) {
-        this.ventoVel = ventoVel;
+    public void setPrevisaoOndas(PrevisaoOndas previsaoOndas) {
+        this.previsaoOndas = previsaoOndas;
     }
     
 }
