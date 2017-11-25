@@ -136,7 +136,7 @@ public class Relatorio {
                 document.add(br);document.add(br);
             }
             
-            file = new File("Relatorios/relatorio"+dia[0]+dia[1]+dia[2]+"_"+hora[0]+hora[1]+hora[2]+".pdf");
+            file = new File("Relatorios/relatorio"+codCidade+"_"+dia[0]+dia[1]+dia[2]+"_"+hora[0]+hora[1]+hora[2]+".pdf");
             
         } catch (FileNotFoundException | DocumentException ex) {
             Logger.getLogger(Relatorio.class.getName()).log(Level.SEVERE, null, ex);

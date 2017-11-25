@@ -14,6 +14,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import model.Alerta;
+import model.AlertaDao;
 import model.Cidade;
 import model.CidadeDao;
 import model.PrevisaoCompleta;
@@ -49,18 +53,9 @@ public class Controle {
                 Logger.getLogger(Controle.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        long t01 = System.currentTimeMillis();
         
-        ptempo.create(listptempo);                
-        long t02 = System.currentTimeMillis();
-
+        ptempo.create(listptempo);
         pondas.create(listpondas);
-        long t03 = System.currentTimeMillis();
-        
-        System.out.println("Tempo xml: "+(t01-start)/1000);
-        System.out.println("Tempo banco tempo: "+(t02-t01)/1000);
-        System.out.println("Tempo banco ondas: "+(t03-t02)/1000);
-
     }
     
     public DefaultComboBoxModel getCidades(Object estado){
@@ -138,6 +133,71 @@ public class Controle {
         Cidade cidade = cidadeDao.retrieveCidade(codCidade);
         
         return relatorio.gerar(cidade.getCodCidade(), cidade.getEstado(), cidade.getCidade());
+    }
+    
+    public List<Alerta> verificarAlertas(List<PrevisaoCompleta> previsoes){
+        List<Alerta> alertas = new ArrayList<>();
+        AlertaDao alertaDao = AlertaDao.getInstance();
+        
+        for (PrevisaoCompleta previsao : previsoes) {
+            Alerta alerta = new Alerta(previsao);
+            if(alerta.getNivel() > 0){
+                alertas.add(alerta);
+            }
+        }
+        
+        alertaDao.create(alertas);
+        
+        return alertas;
+    }
+    
+    public static DefaultTableModel updateAlertas(){
+        DefaultTableModel model = new DefaultTableModel(new String[]{"Nível", "Dia", "Cidade", "Estado"}, 0){
+            @Override
+            public boolean isCellEditable(int row, int column){
+                return false;
+            }
+        };
+        
+        AlertaDao alertaDao = AlertaDao.getInstance();
+        CidadeDao cidadeDao = CidadeDao.getInstance();
+        
+        LocalDateTime localDate = LocalDateTime.now();
+        String data = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(localDate);
+        alertaDao.delete(data);
+        List<Alerta> alertas = alertaDao.retrieveAll();
+        
+        for(int i = 0; i < alertas.size(); i++){
+            String condicao = Integer.toString(alertas.get(i).getNivel());
+            Cidade c = cidadeDao.retrieveCidade(alertas.get(i).getCodCidade());
+            String cidade = c.getCidade();
+            String estado = c.getEstado();
+            String dia = alertas.get(i).getDia();
+            
+            Object[] linha = {condicao, dia, cidade, estado};
+            
+            model.addRow(linha);
+        } 
+        
+        return model;
+    }
+    
+    public void limparAlertas(){
+        AlertaDao alertaDao = AlertaDao.getInstance();
+        alertaDao.deleteAll();
+    }
+    
+    public String[] obterAlerta(String dia, String codCidade){
+        AlertaDao alertaDao = AlertaDao.getInstance();
+        List<Alerta> alerta = alertaDao.retrieveAlerta(dia, codCidade);
+        
+        String[] ret = new String[3];
+        
+        ret[0] = alerta.get(0).getCondicao();
+        ret[1] = alerta.get(0).getAgitacao();
+        ret[2] = Float.toString(alerta.get(0).getVento());
+        
+        return ret;
     }
     
 }

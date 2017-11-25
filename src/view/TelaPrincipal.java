@@ -13,6 +13,8 @@ import java.awt.Desktop;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -23,11 +25,17 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.table.DefaultTableCellRenderer;
+import model.Alerta;
 import model.PrevisaoCompleta;
 
 /**
@@ -68,6 +76,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jPanelSliderAntPrevisoes.setVisible(false);
         jXDatePickerPeriodo.getMonthView().setUpperBound(jXDatePickerPeriodo.getLinkDay());
         jXDatePickerPeriodo.setDate(jXDatePickerPeriodo.getLinkDay());
+        jScrollPaneAlertas.getViewport().setBackground(new Color(0, 0, 102));
+        updateAlertas();
         getRootPane().setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
         setIcon();
         
@@ -95,6 +105,36 @@ public class TelaPrincipal extends javax.swing.JFrame {
          };
 
          worker.execute();
+    }
+    
+    public final void updateAlertas(){
+        jTableAlertas.setModel(Controle.updateAlertas());
+        
+        jTableAlertas.getColumnModel().getColumn(0).setPreferredWidth(40);
+        jTableAlertas.getColumnModel().getColumn(0).setMinWidth(40);
+        jTableAlertas.getColumnModel().getColumn(0).setMaxWidth(40);
+        jTableAlertas.getColumnModel().getColumn(1).setPreferredWidth(100);
+        jTableAlertas.getColumnModel().getColumn(1).setMaxWidth(100);
+        jTableAlertas.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer(){
+            JLabel lbl = new JLabel();
+
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                boolean hasFocus, int row, int column) {
+                    String src = null;
+
+                    if(jTableAlertas.getValueAt(row, column).equals("1")){
+                        src = "/imagens/moderado.png";
+                    }else{
+                        src = "/imagens/ruim.png";
+                    }                
+                    ImageIcon icon = new ImageIcon(getClass().getResource(src));
+                    lbl.setIcon(icon);
+                    lbl.setSize(25, 40);
+                    lbl.setHorizontalAlignment(SwingConstants.CENTER);
+                    return lbl;
+                }
+        });
     }
 
     /**
@@ -434,12 +474,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabelMinimizar = new javax.swing.JLabel();
         jPanelAlertas = new javax.swing.JPanel();
         jLabel86 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPaneAlertas = new javax.swing.JScrollPane();
         jTableAlertas = new javax.swing.JTable();
+        jButtonLimpar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabelAtualizando = new javax.swing.JLabel();
         jProgressBarAtualiza = new javax.swing.JProgressBar();
         jButtonAtualiza = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel87 = new javax.swing.JLabel();
+        jLabel88 = new javax.swing.JLabel();
+        jLabel89 = new javax.swing.JLabel();
+        jButtonRelatorios = new javax.swing.JButton();
+        jButtonAjuda = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         jMenu1.setText("jMenu1");
@@ -449,6 +496,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         setBackground(new java.awt.Color(153, 153, 255));
         setUndecorated(true);
         setResizable(false);
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                formMouseReleased(evt);
+            }
+        });
 
         jPanelBackground.setLayout(null);
 
@@ -503,6 +555,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jButtonBuscar.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jButtonBuscar.setText("Buscar");
         jButtonBuscar.setEnabled(false);
         jButtonBuscar.setFocusable(false);
@@ -512,6 +565,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jButtonRelatorio.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jButtonRelatorio.setText("Gerar Relatório");
         jButtonRelatorio.setEnabled(false);
         jButtonRelatorio.setFocusable(false);
@@ -2794,6 +2848,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jButtonAntBuscar.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jButtonAntBuscar.setText("Buscar");
         jButtonAntBuscar.setEnabled(false);
         jButtonAntBuscar.setFocusable(false);
@@ -3257,21 +3312,36 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jLabel86.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel86.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel86.setText("Painel de Alertas");
+        jLabel86.setText("Painel de Alertas - Condição de Navegação");
 
-        jTableAlertas.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+        jScrollPaneAlertas.setBackground(new java.awt.Color(0, 0, 102));
+        jScrollPaneAlertas.setForeground(new java.awt.Color(255, 255, 255));
+
+        jTableAlertas.setBackground(new java.awt.Color(0, 0, 102));
+        jTableAlertas.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jTableAlertas.setForeground(new java.awt.Color(255, 255, 255));
+        jTableAlertas.setModel(Controle.updateAlertas());
+        jTableAlertas.setFocusable(false);
+        jTableAlertas.setGridColor(new java.awt.Color(204, 204, 204));
+        jTableAlertas.setOpaque(false);
+        jTableAlertas.setRowHeight(25);
+        jTableAlertas.setSelectionBackground(new java.awt.Color(0, 0, 204));
         jTableAlertas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(jTableAlertas);
+        jTableAlertas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableAlertasMouseClicked(evt);
+            }
+        });
+        jScrollPaneAlertas.setViewportView(jTableAlertas);
+
+        jButtonLimpar.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jButtonLimpar.setText("Limpar Tudo");
+        jButtonLimpar.setFocusable(false);
+        jButtonLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLimparActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelAlertasLayout = new javax.swing.GroupLayout(jPanelAlertas);
         jPanelAlertas.setLayout(jPanelAlertasLayout);
@@ -3280,23 +3350,25 @@ public class TelaPrincipal extends javax.swing.JFrame {
             .addGroup(jPanelAlertasLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelAlertasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPaneAlertas)
                     .addGroup(jPanelAlertasLayout.createSequentialGroup()
                         .addComponent(jLabel86)
-                        .addGap(0, 473, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
+                        .addComponent(jButtonLimpar)))
                 .addContainerGap())
         );
         jPanelAlertasLayout.setVerticalGroup(
             jPanelAlertasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelAlertasLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel86)
+                .addGroup(jPanelAlertasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel86, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonLimpar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+                .addComponent(jScrollPaneAlertas, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel2.setOpaque(false);
 
         jLabelAtualizando.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
@@ -3305,6 +3377,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jProgressBarAtualiza.setIndeterminate(true);
 
+        jButtonAtualiza.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jButtonAtualiza.setText("Verificar Atualizações");
         jButtonAtualiza.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -3319,24 +3392,75 @@ public class TelaPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelAtualizando)
-                    .addComponent(jProgressBarAtualiza, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButtonAtualiza)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabelAtualizando)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jProgressBarAtualiza, javax.swing.GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonAtualiza, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelAtualizando)
+                .addGap(1, 1, 1)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jProgressBarAtualiza, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonAtualiza, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Legenda Alertas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel3.setOpaque(false);
+
+        jLabel87.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel87.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel87.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/ruim.png"))); // NOI18N
+        jLabel87.setText("- Ruim");
+
+        jLabel88.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel88.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel88.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/moderado.png"))); // NOI18N
+        jLabel88.setText("- Moderado");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButtonAtualiza, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabelAtualizando)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jProgressBarAtualiza, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(jLabel88)
+                .addGap(19, 19, 19)
+                .addComponent(jLabel87)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel87, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+            .addComponent(jLabel88, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jLabel89.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/ocean.png"))); // NOI18N
+
+        jButtonRelatorios.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jButtonRelatorios.setText("Relatórios");
+        jButtonRelatorios.setFocusable(false);
+        jButtonRelatorios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRelatoriosActionPerformed(evt);
+            }
+        });
+
+        jButtonAjuda.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jButtonAjuda.setText("Ajuda");
+        jButtonAjuda.setFocusable(false);
+        jButtonAjuda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAjudaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -3352,12 +3476,23 @@ public class TelaPrincipal extends javax.swing.JFrame {
                         .addComponent(jLabelFechar))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTabbedPanePrevisoes, javax.swing.GroupLayout.PREFERRED_SIZE, 1237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jPanelAlertas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel89, javax.swing.GroupLayout.DEFAULT_SIZE, 528, Short.MAX_VALUE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jButtonRelatorios, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jButtonAjuda, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addComponent(jTabbedPanePrevisoes, javax.swing.GroupLayout.PREFERRED_SIZE, 1237, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(11, 11, 11))
         );
         jPanel1Layout.setVerticalGroup(
@@ -3370,14 +3505,26 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPanePrevisoes, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPanelAlertas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jButtonRelatorios)
+                                    .addComponent(jButtonAjuda))
+                                .addGap(28, 28, 28))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(15, 15, 15)))
+                        .addComponent(jLabel89, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(442, Short.MAX_VALUE))
         );
 
         jPanelBackground.add(jPanel1);
-        jPanel1.setBounds(2, 0, 1263, 1120);
+        jPanel1.setBounds(2, 0, 1272, 1120);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/fundo-azul-degrade.jpg"))); // NOI18N
         jPanelBackground.add(jLabel1);
@@ -3710,6 +3857,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabelVoltar.setVisible(true);
         jLabelAvancar.setVisible(true);
         jButtonRelatorio.setEnabled(true);
+        
+        List<Alerta> alertas = controle.verificarAlertas(previsoes);
+        if(!alertas.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Novo(s) alerta(s)!");
+            updateAlertas();
+        }
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
     private void jLabelVoltarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelVoltarMousePressed
@@ -3751,8 +3904,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         Controle controle = new Controle();
         List<PrevisaoCompleta> previsoes = controle.obterPrevisao(Integer.parseInt(jTextFieldAntCodCidade.getText()), df.format(jXDatePickerPeriodo.getDate()));
-        System.out.println(previsoes.size());
-        if(previsoes.size()!=0){
+        if(!previsoes.isEmpty()){
             jLabelDia7.setText(previsoes.get(0).getPrevisaoTempo().getDia());
             jLabelCondicao7.setText(previsoes.get(0).getPrevisaoTempo().legendaTempo());
             jLabelMaxima7.setText(Integer.toString(previsoes.get(0).getPrevisaoTempo().getMaxima())+" °C");
@@ -3801,6 +3953,57 @@ public class TelaPrincipal extends javax.swing.JFrame {
         start();
     }//GEN-LAST:event_jButtonAtualizaActionPerformed
 
+    private void jButtonLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimparActionPerformed
+        if(JOptionPane.showOptionDialog(null, 
+            "Limpar todos os alertas?", 
+            "Limpar Tudo", 
+            JOptionPane.YES_OPTION, 
+            JOptionPane.NO_OPTION, 
+            null, 
+            new String[]{"Sim", "Não"},
+            "default") == JOptionPane.YES_OPTION){
+            Controle controle = new Controle();
+            controle.limparAlertas();
+            updateAlertas();
+        }
+    }//GEN-LAST:event_jButtonLimparActionPerformed
+
+    private void formMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseReleased
+        jTableAlertas.clearSelection();
+    }//GEN-LAST:event_formMouseReleased
+
+    private void jTableAlertasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableAlertasMouseClicked
+        JTable table =(JTable) evt.getSource();
+        if (evt.getClickCount() == 2) {
+            String nivel = (String) jTableAlertas.getValueAt(jTableAlertas.getSelectedRow(), 0);
+            String dia = (String) jTableAlertas.getValueAt(jTableAlertas.getSelectedRow(), 1);
+            String cidade = (String) jTableAlertas.getValueAt(jTableAlertas.getSelectedRow(), 2);
+            String estado = (String) jTableAlertas.getValueAt(jTableAlertas.getSelectedRow(), 3);
+            TelaAlerta detalhes = new TelaAlerta(null, true, nivel, dia, cidade, estado);
+            detalhes.setVisible(true);
+        }
+    }//GEN-LAST:event_jTableAlertasMouseClicked
+
+    private void jButtonRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRelatoriosActionPerformed
+        String cdir = System.getProperty("user.dir");
+        File dir = new File(cdir+File.separator+"Relatorios");
+        if(dir.exists()){        
+            try {
+                Desktop desktop = Desktop.getDesktop();
+                desktop.open(dir);
+            } catch (IOException ex) {
+                Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Nenhum relatório armazenado!");
+        }
+    }//GEN-LAST:event_jButtonRelatoriosActionPerformed
+
+    private void jButtonAjudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAjudaActionPerformed
+        TelaAjuda tela = new TelaAjuda(this, true);
+        tela.setVisible(true);
+    }//GEN-LAST:event_jButtonAjudaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -3837,10 +4040,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonAjuda;
     private javax.swing.JButton jButtonAntBuscar;
     private javax.swing.JButton jButtonAtualiza;
     private javax.swing.JButton jButtonBuscar;
+    private javax.swing.JButton jButtonLimpar;
     private javax.swing.JButton jButtonRelatorio;
+    private javax.swing.JButton jButtonRelatorios;
     private javax.swing.JComboBox<String> jComboBoxAntCidade;
     private javax.swing.JComboBox<String> jComboBoxAntEstado;
     private javax.swing.JComboBox<String> jComboBoxCidade;
@@ -3930,6 +4136,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel84;
     private javax.swing.JLabel jLabel85;
     private javax.swing.JLabel jLabel86;
+    private javax.swing.JLabel jLabel87;
+    private javax.swing.JLabel jLabel88;
+    private javax.swing.JLabel jLabel89;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabelAtualizando;
     private javax.swing.JLabel jLabelAvancar;
@@ -4136,6 +4345,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanelAlertas;
     private javax.swing.JPanel jPanelBackground;
     private javax.swing.JPanel jPanelDia1;
@@ -4150,7 +4360,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private diu.swe.habib.JPanelSlider.JPanelSlider jPanelSliderAntPrevisoes;
     private diu.swe.habib.JPanelSlider.JPanelSlider jPanelSliderPrevisoes;
     private javax.swing.JProgressBar jProgressBarAtualiza;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPaneAlertas;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator11;

@@ -36,16 +36,15 @@ public class TelaLoad extends javax.swing.JFrame {
         }
         
         initComponents();
-        getRootPane().setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));        
+        getRootPane().setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));       
+        setIcon(); 
         start();
-        setIcon();
     }
     
     private void start(){
         SwingWorker worker = new SwingWorker() {
           @Override
           public Void doInBackground() throws Exception {
-              //Controle.inicializar();
               Thread.sleep(2000);
               return null;
           }
@@ -82,11 +81,6 @@ public class TelaLoad extends javax.swing.JFrame {
         setTitle("Ocean");
         setUndecorated(true);
         setResizable(false);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
-            }
-        });
 
         jPanel1.setLayout(null);
 
@@ -192,10 +186,6 @@ public class TelaLoad extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        
-    }//GEN-LAST:event_formWindowOpened
-
     private void jLabelFecharMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelFecharMouseReleased
         System.exit(0);
     }//GEN-LAST:event_jLabelFecharMouseReleased
@@ -271,6 +261,6 @@ public class TelaLoad extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../imagens/earth.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imagens/earth.png")));
     }
 }
