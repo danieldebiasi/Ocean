@@ -103,6 +103,5 @@ public class PrevisaoOndasDao extends Dao {
     
     public List<PrevisaoOndas> retrieveByData(int cidade, String data) {        
         return this.retrieveGeneric("SELECT * FROM ondas WHERE cod_cidade="+cidade+" AND data='"+data+"'");
-     }
-
+    }
 }

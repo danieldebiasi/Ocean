@@ -26,7 +26,8 @@ abstract class Previsao {
      * @return the dia
      */
     public String getDia() {
-        return dia;
+        String[] split = dia.split("/");
+        return split[2]+"/"+split[1]+"/"+split[0];
     }
 
     /**

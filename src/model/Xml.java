@@ -47,7 +47,7 @@ public class Xml {
                     Node kn = nl.item(k);
                     if(kn.getNodeName().equals("dia")){
                         String[] split = kn.getTextContent().split("-");
-                        String dia = split[2]+"/"+split[1]+"/"+split[0];
+                        String dia = split[0]+"/"+split[1]+"/"+split[2];
                         previsao.setDia(dia);
                     }
                     if(kn.getNodeName().equals("tempo")){
@@ -89,7 +89,7 @@ public class Xml {
                     if(kn.getNodeName().equals("dia")){
                         String[] split = kn.getTextContent().split(" ");
                         String[] diaSplit = split[0].split("-");
-                        String dia = diaSplit[0]+"/"+diaSplit[1]+"/"+diaSplit[2];
+                        String dia = diaSplit[2]+"/"+diaSplit[1]+"/"+diaSplit[0];
                         previsao.setDia(dia);
                         previsao.setHora(split[1]);
                     }

@@ -106,5 +106,4 @@ public class PrevisaoTempoDao extends Dao {
         }
         return previsao;
     }
-
 }

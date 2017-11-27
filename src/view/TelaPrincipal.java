@@ -13,8 +13,6 @@ import java.awt.Desktop;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -64,7 +62,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         UIManager.getDefaults().put("ScrollPanelTAbbe.contentOpaque", false);
         
         LocalDateTime localDate = LocalDateTime.now();
-        dia = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(localDate);
+        dia = DateTimeFormatter.ofPattern("yyy/MM/dd").format(localDate);
         
         initComponents();
         
@@ -3901,7 +3899,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonRelatorioActionPerformed
 
     private void jButtonAntBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAntBuscarActionPerformed
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat df = new SimpleDateFormat("yyy/MM/dd");
         Controle controle = new Controle();
         List<PrevisaoCompleta> previsoes = controle.obterPrevisao(Integer.parseInt(jTextFieldAntCodCidade.getText()), df.format(jXDatePickerPeriodo.getDate()));
         if(!previsoes.isEmpty()){
