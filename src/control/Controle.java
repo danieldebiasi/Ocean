@@ -163,7 +163,7 @@ public class Controle {
         CidadeDao cidadeDao = CidadeDao.getInstance();
         
         LocalDateTime localDate = LocalDateTime.now();
-        String data = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(localDate);
+        String data = DateTimeFormatter.ofPattern("yyyy/MM/dd").format(localDate);
         alertaDao.delete(data);
         List<Alerta> alertas = alertaDao.retrieveAll();
         
