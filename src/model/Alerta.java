@@ -69,7 +69,12 @@ public class Alerta {
      * @return the dia
      */
     public String getDia() {
-        return dia;
+        return this.dia;
+    }
+    
+    public String getDiaFormatado() {
+        String[] split = dia.split("/");
+        return split[2]+"/"+split[1]+"/"+split[0];
     }
 
     /**

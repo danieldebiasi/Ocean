@@ -15,7 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import model.Alerta;
 import model.AlertaDao;
 import model.Cidade;
@@ -44,7 +43,7 @@ public class Controle {
         Xml xml = new Xml();
         
         cidades = cidadeDao.retrieveAll();
-        long start = System.currentTimeMillis();
+        
         for(int i = 0; i < cidades.size(); i++){
             try {
                 listptempo.addAll(xml.getUpdatedPrevisaoTempo(cidades.get(i).getCodCidade()));
@@ -172,7 +171,7 @@ public class Controle {
             Cidade c = cidadeDao.retrieveCidade(alertas.get(i).getCodCidade());
             String cidade = c.getCidade();
             String estado = c.getEstado();
-            String dia = alertas.get(i).getDia();
+            String dia = alertas.get(i).getDiaFormatado();
             
             Object[] linha = {condicao, dia, cidade, estado};
             

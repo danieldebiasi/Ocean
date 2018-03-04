@@ -110,9 +110,10 @@ public class AlertaDao extends Dao {
     
     public void deleteAll(){
         PreparedStatement stmt;
+        String sql = "DELETE FROM alertas";
         try {
-            stmt = myCONN.prepareStatement("DELETE FROM alertas");
-            this.executeUpdate(stmt);
+            stmt = myCONN.prepareStatement(sql);
+            stmt.execute();
             stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(AlertaDao.class.getName()).log(Level.SEVERE, null, ex);

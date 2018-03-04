@@ -62,7 +62,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         UIManager.getDefaults().put("ScrollPanelTAbbe.contentOpaque", false);
         
         LocalDateTime localDate = LocalDateTime.now();
-        dia = DateTimeFormatter.ofPattern("yyy/MM/dd").format(localDate);
+        dia = DateTimeFormatter.ofPattern("yyyy/MM/dd").format(localDate);
         
         initComponents();
         
@@ -3677,7 +3677,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         Controle controle = new Controle();
         List<PrevisaoCompleta> previsoes = controle.obterPrevisoes(Integer.parseInt(jTextFieldCodCidade.getText()), dia);
         
-        jLabelDia1.setText(previsoes.get(0).getPrevisaoTempo().getDia());
+        jLabelDia1.setText(previsoes.get(0).getPrevisaoTempo().getDiaFormatado());
         jLabelCondicao1.setText(previsoes.get(0).getPrevisaoTempo().legendaTempo());
         jLabelMaxima1.setText(Integer.toString(previsoes.get(0).getPrevisaoTempo().getMaxima())+" °C");
         jLabelMinima1.setText(Integer.toString(previsoes.get(0).getPrevisaoTempo().getMinima())+" °C");        
@@ -3706,7 +3706,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabelVentoVel21h_1.setText(Float.toString(previsoes.get(0).getPrevisaoOndas().get(7).getVentoVel()).equals("-1.0") ? "Indisponível" : Float.toString(previsoes.get(0).getPrevisaoOndas().get(7).getVentoVel())+" km/h");
         jLabelVentoDir21h_1.setText(previsoes.get(0).getPrevisaoOndas().get(7).getVentoDir());
         
-        jLabelDia2.setText(previsoes.get(1).getPrevisaoTempo().getDia());
+        jLabelDia2.setText(previsoes.get(1).getPrevisaoTempo().getDiaFormatado());
         jLabelCondicao2.setText(previsoes.get(1).getPrevisaoTempo().legendaTempo());
         jLabelMaxima2.setText(Integer.toString(previsoes.get(1).getPrevisaoTempo().getMaxima())+" °C");
         jLabelMinima2.setText(Integer.toString(previsoes.get(1).getPrevisaoTempo().getMinima())+" °C");        
@@ -3735,7 +3735,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabelVentoVel21h_2.setText(Float.toString(previsoes.get(1).getPrevisaoOndas().get(7).getVentoVel()).equals("-1.0") ? "Indisponível" : Float.toString(previsoes.get(1).getPrevisaoOndas().get(7).getVentoVel())+" km/h");
         jLabelVentoDir21h_2.setText(previsoes.get(1).getPrevisaoOndas().get(7).getVentoDir());
         
-        jLabelDia3.setText(previsoes.get(2).getPrevisaoTempo().getDia());
+        jLabelDia3.setText(previsoes.get(2).getPrevisaoTempo().getDiaFormatado());
         jLabelCondicao3.setText(previsoes.get(2).getPrevisaoTempo().legendaTempo());
         jLabelMaxima3.setText(Integer.toString(previsoes.get(2).getPrevisaoTempo().getMaxima())+" °C");
         jLabelMinima3.setText(Integer.toString(previsoes.get(2).getPrevisaoTempo().getMinima())+" °C");        
@@ -3764,7 +3764,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabelVentoVel21h_3.setText(Float.toString(previsoes.get(2).getPrevisaoOndas().get(7).getVentoVel()).equals("-1.0") ? "Indisponível" : Float.toString(previsoes.get(2).getPrevisaoOndas().get(7).getVentoVel())+" km/h");
         jLabelVentoDir21h_3.setText(previsoes.get(2).getPrevisaoOndas().get(7).getVentoDir());
         
-        jLabelDia4.setText(previsoes.get(3).getPrevisaoTempo().getDia());
+        jLabelDia4.setText(previsoes.get(3).getPrevisaoTempo().getDiaFormatado());
         jLabelCondicao4.setText(previsoes.get(3).getPrevisaoTempo().legendaTempo());
         jLabelMaxima4.setText(Integer.toString(previsoes.get(3).getPrevisaoTempo().getMaxima())+" °C");
         jLabelMinima4.setText(Integer.toString(previsoes.get(3).getPrevisaoTempo().getMinima())+" °C");        
@@ -3793,7 +3793,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabelVentoVel21h_4.setText(Float.toString(previsoes.get(3).getPrevisaoOndas().get(7).getVentoVel()).equals("-1.0") ? "Indisponível" : Float.toString(previsoes.get(3).getPrevisaoOndas().get(7).getVentoVel())+" km/h");
         jLabelVentoDir21h_4.setText(previsoes.get(3).getPrevisaoOndas().get(7).getVentoDir());
         
-        jLabelDia5.setText(previsoes.get(4).getPrevisaoTempo().getDia());
+        jLabelDia5.setText(previsoes.get(4).getPrevisaoTempo().getDiaFormatado());
         jLabelCondicao5.setText(previsoes.get(4).getPrevisaoTempo().legendaTempo());
         jLabelMaxima5.setText(Integer.toString(previsoes.get(4).getPrevisaoTempo().getMaxima())+" °C");
         jLabelMinima5.setText(Integer.toString(previsoes.get(4).getPrevisaoTempo().getMinima())+" °C");        
@@ -3822,7 +3822,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabelVentoVel21h_5.setText(Float.toString(previsoes.get(4).getPrevisaoOndas().get(7).getVentoVel()).equals("-1.0") ? "Indisponível" : Float.toString(previsoes.get(4).getPrevisaoOndas().get(7).getVentoVel())+" km/h");
         jLabelVentoDir21h_5.setText(previsoes.get(4).getPrevisaoOndas().get(7).getVentoDir());
         
-        jLabelDia6.setText(previsoes.get(5).getPrevisaoTempo().getDia());
+        jLabelDia6.setText(previsoes.get(5).getPrevisaoTempo().getDiaFormatado());
         jLabelCondicao6.setText(previsoes.get(5).getPrevisaoTempo().legendaTempo());
         jLabelMaxima6.setText(Integer.toString(previsoes.get(5).getPrevisaoTempo().getMaxima())+" °C");
         jLabelMinima6.setText(Integer.toString(previsoes.get(5).getPrevisaoTempo().getMinima())+" °C");        
@@ -3903,7 +3903,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         Controle controle = new Controle();
         List<PrevisaoCompleta> previsoes = controle.obterPrevisao(Integer.parseInt(jTextFieldAntCodCidade.getText()), df.format(jXDatePickerPeriodo.getDate()));
         if(!previsoes.isEmpty()){
-            jLabelDia7.setText(previsoes.get(0).getPrevisaoTempo().getDia());
+            jLabelDia7.setText(previsoes.get(0).getPrevisaoTempo().getDiaFormatado());
             jLabelCondicao7.setText(previsoes.get(0).getPrevisaoTempo().legendaTempo());
             jLabelMaxima7.setText(Integer.toString(previsoes.get(0).getPrevisaoTempo().getMaxima())+" °C");
             jLabelMinima7.setText(Integer.toString(previsoes.get(0).getPrevisaoTempo().getMinima())+" °C");        
@@ -3974,10 +3974,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         JTable table =(JTable) evt.getSource();
         if (evt.getClickCount() == 2) {
             String nivel = (String) jTableAlertas.getValueAt(jTableAlertas.getSelectedRow(), 0);
-            String dia = (String) jTableAlertas.getValueAt(jTableAlertas.getSelectedRow(), 1);
+            String[] split = ((String) jTableAlertas.getValueAt(jTableAlertas.getSelectedRow(), 1)).split("/");
+            String data = split[2]+"/"+split[1]+"/"+split[0];
             String cidade = (String) jTableAlertas.getValueAt(jTableAlertas.getSelectedRow(), 2);
             String estado = (String) jTableAlertas.getValueAt(jTableAlertas.getSelectedRow(), 3);
-            TelaAlerta detalhes = new TelaAlerta(null, true, nivel, dia, cidade, estado);
+            TelaAlerta detalhes = new TelaAlerta(null, true, nivel, data, cidade, estado);
             detalhes.setVisible(true);
         }
     }//GEN-LAST:event_jTableAlertasMouseClicked
