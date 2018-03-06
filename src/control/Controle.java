@@ -7,6 +7,7 @@
 package control;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -25,7 +26,8 @@ import model.PrevisaoOndasDao;
 import model.PrevisaoTempo;
 import model.PrevisaoTempoDao;
 import model.Relatorio;
-import model.Xml;
+import model.XmlPrevisaoOndas;
+import model.XmlPrevisaoTempo;
 
 /**
  *
@@ -40,15 +42,17 @@ public class Controle {
         List<PrevisaoTempo> listptempo = new ArrayList<>();
         List<PrevisaoOndas> listpondas = new ArrayList<>();
         List<Cidade> cidades = new ArrayList<>();        
-        Xml xml = new Xml();
         
         cidades = cidadeDao.retrieveAll();
         
         for(int i = 0; i < cidades.size(); i++){
             try {
-                listptempo.addAll(xml.getUpdatedPrevisaoTempo(cidades.get(i).getCodCidade()));
-                listpondas.addAll(xml.getUpdatedPrevisaoOndas(cidades.get(i).getCodCidade()));
-            } catch (Exception ex) {
+                XmlPrevisaoTempo xmlTempo = new XmlPrevisaoTempo();
+                XmlPrevisaoOndas xmlOndas = new XmlPrevisaoOndas();
+                
+                listptempo.addAll(xmlTempo.processar(xmlTempo.montarUrl(cidades.get(i).getCodCidade())));
+                listpondas.addAll(xmlOndas.processar(xmlOndas.montarUrl(cidades.get(i).getCodCidade())));
+            } catch (IOException ex) {
                 Logger.getLogger(Controle.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

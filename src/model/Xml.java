@@ -9,120 +9,79 @@ package model;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.DefaultListModel;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
- *
- * @author Grupo Gambiarra
+ * Classe para processamento do XML de previsões utilizando o parser SAX.
+ * @author Daniel
  */
-public class Xml {
-
-    DefaultListModel<String> MODEL = new DefaultListModel<>();
-
-    public List<PrevisaoTempo> getUpdatedPrevisaoTempo(int codCidade) throws Exception {
-        List<PrevisaoTempo> previsoes = new ArrayList<>();
-        
-        URL url = new URL("http://servicos.cptec.inpe.br/XML/cidade/7dias/"+codCidade+"/previsao.xml");
-        URLConnection connection = url.openConnection();
-
-        Document doc = parseXML(connection.getInputStream());
-        NodeList cidades = doc.getElementsByTagName("cidade");
-
-        NodeList nodes = cidades.item(0).getChildNodes();
-        
-        for(int i = 0; i < nodes.getLength(); i++){
-            Node n = nodes.item(i);
-            if(n.getNodeName().equals("previsao")){
-                PrevisaoTempo previsao = new PrevisaoTempo();
-                previsao.setCodCidade(codCidade);
-                NodeList nl = n.getChildNodes();
-                for(int k = 0; k < nl.getLength(); k++){
-                    Node kn = nl.item(k);
-                    if(kn.getNodeName().equals("dia")){
-                        String[] split = kn.getTextContent().split("-");
-                        String dia = split[0]+"/"+split[1]+"/"+split[2];
-                        previsao.setDia(dia);
-                    }
-                    if(kn.getNodeName().equals("tempo")){
-                        previsao.setTempo(kn.getTextContent());
-                    }
-                    if(kn.getNodeName().equals("maxima")){
-                        previsao.setMaxima(Integer.parseInt(kn.getTextContent()));
-                    }
-                    if(kn.getNodeName().equals("minima")){
-                        previsao.setMinima(Integer.parseInt(kn.getTextContent()));
-                    }
-                }
-                previsoes.add(previsao);                
-            }
-        }
-     
-        return previsoes;
+public abstract class Xml extends DefaultHandler {
+    
+    private String tagAtual;
+    private int codCidadeAtual;
+    
+    public Xml() {
+        super();
     }
     
-    public List<PrevisaoOndas> getUpdatedPrevisaoOndas(int codCidade) throws Exception {
-        List<PrevisaoOndas> previsoes = new ArrayList<>();
-        
-        URL url = new URL("http://servicos.cptec.inpe.br/XML/cidade/"+codCidade+"/todos/tempos/ondas.xml");
-        URLConnection connection = url.openConnection();
-
-        Document doc = parseXML(connection.getInputStream());
-        NodeList cidades = doc.getElementsByTagName("cidade");
-
-        NodeList nodes = cidades.item(0).getChildNodes();
-        
-        for(int i = 0; i < nodes.getLength(); i++){
-            Node n = nodes.item(i);
-            if(n.getNodeName().equals("previsao")){
-                PrevisaoOndas previsao = new PrevisaoOndas();
-                previsao.setCodCidade(codCidade);
-                NodeList nl = n.getChildNodes();
-                for(int k = 0; k < nl.getLength(); k++){
-                    Node kn = nl.item(k);
-                    if(kn.getNodeName().equals("dia")){
-                        String[] split = kn.getTextContent().split(" ");
-                        String[] diaSplit = split[0].split("-");
-                        String dia = diaSplit[2]+"/"+diaSplit[1]+"/"+diaSplit[0];
-                        previsao.setDia(dia);
-                        previsao.setHora(split[1]);
-                    }
-                    if(kn.getNodeName().equals("agitacao")){
-                        previsao.setAgitacao(kn.getTextContent());
-                    }
-                    if(kn.getNodeName().equals("vento")){
-                        previsao.setVentoVel(Float.parseFloat(kn.getTextContent()));
-                    }
-                    if(kn.getNodeName().equals("vento_dir")){
-                        previsao.setVentoDir(kn.getTextContent());
-                    }
-                }
-                previsoes.add(previsao);
-            }
-        }
-        
-        return previsoes;
+    public String getTagAtual() {
+        return this.tagAtual;
     }
     
-    private Document parseXML(InputStream stream) throws Exception {
-        DocumentBuilderFactory objDocumentBuilderFactory = null;
-        DocumentBuilder objDocumentBuilder = null;
-        Document doc = null;
-        try {
-            objDocumentBuilderFactory = DocumentBuilderFactory.newInstance();
-            objDocumentBuilder = objDocumentBuilderFactory.newDocumentBuilder();
-
-            doc = objDocumentBuilder.parse(stream);
-        } catch (Exception ex) {
-            throw ex;
-        }
-
-        return doc;
-    }    
+    public void setTagAtual(String tagAtual) {
+        this.tagAtual = tagAtual;
+    }
+    
+    public int getCodCidadeAtual() {
+        return this.codCidadeAtual;
+    }
+    
+    public void setCodCidadeAtual(int codCidadeAtual) {
+        this.codCidadeAtual = codCidadeAtual;
+    }
+    
+    /**
+     * Obter arquivo XML a partir do link fornecido.
+     * @param link
+     * @return
+     * @throws Exception 
+     */
+    private InputStream obterArquivo(String link) throws Exception  {
+        URL url = new URL(link);
+        URLConnection connection = url.openConnection();
+        
+        return connection.getInputStream();
+    }
+   
+    @Override
+    public void startDocument() {
+        //System.out.println("Iniciando processamento do XML...");
+    }
+    
+    @Override
+    public void endDocument() {
+        //System.out.println("Processamento concluído.");
+    }
+    
+    @Override
+    public void startElement(String uri, String localName, String qname, Attributes attributes) {
+        this.tagAtual = qname;
+        
+        System.out.println(qname);
+    }
+    
+    @Override
+    public void endElement(String uri, String localName, String qname) {
+        setTagAtual("");
+    }
+    
+    @Override
+    public void characters(char[] ch, int start, int length) throws SAXException {
+        String valor = new String(ch, start, length);
+        
+        System.out.println("VALOR: " + valor);
+    }
+    
 }
